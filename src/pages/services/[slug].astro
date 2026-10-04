@@ -1,0 +1,7 @@
+---
+import ServiceBody from '../../components/ServiceBody.astro';
+import { serviceList } from '../../data/services';
+export function getStaticPaths() { return serviceList.map((s) => ({ params: { slug: s.slug }, props: { s } })); }
+const { s } = Astro.props;
+---
+<ServiceBody s={s} />

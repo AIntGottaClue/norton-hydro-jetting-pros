@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Callout from '../../components/Callout.astro';
+import { areas, areaBySlug } from '../../data/areas';
+import { SITE_URL, business } from '../../lib/site';
+import { u } from '../../lib/utils';
+
+export function getStaticPaths() {
+  return areas.map((area) => ({ params: { slug: area.slug }, props: { area } }));
+}
+const { area: a } = Astro.props;
+const path = `/service-areas/${a.slug}`;
+const title = `Hydro Jetting in ${a.name}, Norton, OH | ${business.name}`;
+const description = `${business.name} covers hydro jetting for drain lines in the ${a.name} area of Norton, Ohio, with local sewer, septic and housing notes.`;
+const pageUrl = `${SITE_URL}${path}`;
+const service = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${pageUrl}#service`,
+  name: `Hydro jetting in ${a.name}, Norton, Ohio`,
+  serviceType: 'Hydro jetting',
+  provider: { '@id': `${SITE_URL}/#business` },
+  areaServed: { '@type': 'Place', name: `${a.name}, Norton, Ohio` },
+  description,
+};
+const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: a.faqs.map(f => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) };
+const nearby = a.nearby.map((s) => areaBySlug[s]);
+---
+<Base title={title} description={description} path={path} crumbs={[{ name: 'Service Areas', path: '/service-areas' }, { name: a.name, path }]} extraSchema={[service, faqSchema]}>
+  <Hero headline={`Hydro jetting in ${a.name}, Norton`} intro={a.intro} location={a.name} image={{ src: a.image, alt: a.imageAlt }} crumbs={[{ href: '/service-areas', label: 'Service Areas' }, { href: path, label: a.name }]} />
+  <section class="content-section"><div class="content-inner">
+    <div class="prose">
+      <h2 class="section-title">{a.title}</h2>
+      {a.paragraphs.map((p) => <p>{p}</p>)}
+      <div style="margin-top:20px;display:flex;gap:26px;flex-wrap:wrap">
+        <a class="text-link" href={u('/hydro-jetting')}>How hydro jetting works<span aria-hidden="true">&#8599;</span></a>
+        <a class="text-link" href={u('/services')}>Our services<span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </div>
+
+  </div></section>
+  <section class="content-section" style="background:#eeece2"><div class="content-inner">
+    <h2 class="section-title">Nearby areas</h2>
+    <div class="pill-grid">
+      {nearby.map((n) => <a class="pill" href={u(`/service-areas/${n.slug}`)}>Hydro jetting in {n.name}</a>)}
+      <a class="pill" href={u('/service-areas')}>All service areas</a>
+    </div>
+  </div></section>
+
+  <Callout title={`Request drain service in ${a.name}`} text="Include the street, affected fixtures and any previous inspection record." />
+  <section class="content-section"><div class="content-inner prose">
+    <h2 class="section-title">Drain cleaning FAQs in {a.name}</h2>
+    {a.faqs.map(f => <details style="border-bottom:1px solid #d5d6cc;padding:18px 0"><summary style="font-weight:600;cursor:pointer">{f.question}</summary><p style="margin-top:12px">{f.answer}</p></details>)}
+    <h3 style="margin-top:32px">Local sources</h3>
+    <ul style="padding-left:20px">{a.sources.map(s => <li><a href={s.url} target="_blank" rel="noopener noreferrer" style="text-decoration:underline">{s.label}</a></li>)}</ul>
+  </div></section>
+  <Callout title={`Need hydro jetting in ${a.name}?`} text="Tell us what the drain is doing, and we will follow up." />
+</Base>

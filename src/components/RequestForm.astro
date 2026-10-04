@@ -1,0 +1,19 @@
+---
+import { siteConfig } from '../data/siteConfig';
+const { location = 'Homepage' } = Astro.props;
+---
+<aside class="form-card" aria-label="Request a call form" id="request-service">
+  <div class="form-card-head"><div><h2>Request a call</h2></div></div>
+  <form class="request-form" data-lead-form id="Norton-Hydro-Jetting-Pros-Form" name="Norton-Hydro-Jetting-Pros-Form">
+    <input class="honeypot" aria-hidden="true" tabindex="-1" type="text" readonly name="page_site" value={siteConfig.brand} />
+    <input class="honeypot" aria-hidden="true" tabindex="-1" type="text" readonly name="page_location" value={location} />
+    <input class="honeypot" aria-hidden="true" tabindex="-1" type="text" readonly name="page_code" value="HSP" />
+    <div class="field full"><label for="rf-name">Your name</label><input id="rf-name" name="full_name" type="text" autocomplete="name" required /></div>
+    <div class="field full"><label for="rf-phone">Phone number</label><input id="rf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required /></div>
+    <div class="field full"><label for="rf-email">Email address</label><input id="rf-email" name="email" type="email" autocomplete="email" /></div>
+    <div class="field full"><label for="rf-message">What is happening?</label><textarea id="rf-message" name="page_details"></textarea></div>
+    <label aria-hidden="true" class="honeypot">Leave this blank<input name="website" tabindex="-1" autocomplete="off" /></label>
+    <div class="form-status" role="status" aria-live="polite"></div>
+    <button class="form-submit" type="submit">Request a call</button>
+  </form>
+</aside>

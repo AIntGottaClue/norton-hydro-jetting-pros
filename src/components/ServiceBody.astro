@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Callout from './Callout.astro';
+import ItemList from './ItemList.astro';
+import { SITE_URL, business } from '../lib/site';
+import { faqSchema } from '../lib/seo';
+import { serviceList, guideList } from '../data/services';
+import { u } from '../lib/utils';
+const { s } = Astro.props;
+const pageUrl = `${SITE_URL}${s.path}`;
+const parent = s.kind === 'service' ? { name: 'Services', path: '/services' } : null;
+const crumbs = parent ? [parent, { name: s.name, path: s.path }] : [{ name: s.name, path: s.path }];
+const heroCrumbs = crumbs.map((c) => ({ href: c.path, label: c.name }));
+const schema = s.kind === 'service'
+  ? { '@context': 'https://schema.org', '@type': 'Service', '@id': `${pageUrl}#service`, name: `${s.name} in Norton, Ohio`, serviceType: 'Hydro jetting', provider: { '@id': `${SITE_URL}/#business` }, areaServed: { '@type': 'City', name: 'Norton, Ohio' }, description: s.description }
+  : { '@context': 'https://schema.org', '@type': 'Article', '@id': `${pageUrl}#article`, headline: s.headline, description: s.description, mainEntityOfPage: pageUrl, publisher: { '@id': `${SITE_URL}/#business` } };
+const others = [...serviceList, ...guideList].filter((o) => o.slug !== s.slug);
+---
+<Base title={s.title} description={s.description} path={s.path} crumbs={crumbs} extraSchema={[schema, faqSchema(s.faqs)]}>
+  <Hero headline={s.headline} intro={s.intro} location={s.name} crumbs={heroCrumbs} image={{ src: s.image, alt: s.imageAlt }} />
+  <section class="content-section"><div class="content-inner">
+    <div class="prose">
+      {s.sections.map((sec) => (<>
+        <h2 class="section-title">{sec.title}</h2>
+        {sec.paragraphs.map((p) => <p>{p}</p>)}
+      </>))}
+    </div>
+  </div></section>
+  <section class="content-section" style="background:#eeece2"><div class="content-inner">
+    <h2 class="section-title">Worth knowing</h2>
+    <ItemList items={s.points} />
+  </div></section>
+  <section class="content-section"><div class="content-inner prose">
+    <h2 class="section-title">Questions about {s.name.toLowerCase()}</h2>
+    {s.faqs.map((f) => <details style="border-bottom:1px solid #d5d6cc;padding:18px 0"><summary style="font-weight:600;cursor:pointer">{f.question}</summary><p style="margin-top:12px">{f.answer}</p></details>)}
+    <h3 style="margin-top:32px">Local sources</h3>
+    <ul style="padding-left:20px">{s.sources.map((x) => <li><a href={x.url} target="_blank" rel="noopener noreferrer" style="text-decoration:underline">{x.label}</a></li>)}</ul>
+    <div class="pill-grid">{others.map((o) => <a class="pill" href={u(o.path)}>{o.name}</a>)}</div>
+  </div></section>
+  <Callout title="Need hydro jetting in Norton?" text="Tell us what the drain is doing and where, and we will follow up." />
+</Base>

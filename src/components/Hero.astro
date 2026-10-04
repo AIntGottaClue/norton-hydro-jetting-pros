@@ -1,0 +1,23 @@
+---
+import RequestForm from './RequestForm.astro';
+import { business } from '../lib/site';
+import { u } from '../lib/utils';
+const { headline, intro, location, crumbs = [], image } = Astro.props;
+---
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      {crumbs.length > 0 && (
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href={u('/')}>Home</a>
+          {crumbs.map((c, i) => <><span aria-hidden="true">/</span>{i < crumbs.length - 1 ? <a href={u(c.href)}>{c.label}</a> : <span>{c.label}</span>}</>)}
+        </nav>
+      )}
+      <h1>{headline}</h1>
+      <p class="hero-copy">{intro}</p>
+      <div class="hero-cta"><a class="call-cta" href={business.phoneHref}>Call {business.phoneDisplay}</a></div>
+      {image && <img class="hero-img" src={u(image.src)} alt={image.alt} width="1200" height="896" loading="eager" decoding="async" fetchpriority="high" />}
+    </div>
+    <RequestForm location={location} />
+  </div>
+</section>

@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Callout from '../components/Callout.astro';
+import { pages } from '../data/pages';
+import { serviceList, guideList } from '../data/services';
+import { areas } from '../data/areas';
+import { faqSchema } from '../lib/seo';
+import { u } from '../lib/utils';
+const page = pages.home;
+const homeFaqs = [
+  { question: 'Who is responsible for the sewer line at a Norton home?', answer: 'The City of Norton says the lateral from the home to the main belongs to the property owner. The main is handled by the sewer authority that serves the address.' },
+  { question: 'Does hydro jetting fix broken pipe?', answer: 'No. Jetting cleans buildup from sound pipe. A cracked or offset line needs inspection and repair.' },
+  { question: 'Can you work on a home with a septic system?', answer: 'Jetting can clean the pipe that leads to a septic tank. It cannot change how the tank or drain field treats wastewater.' },
+];
+---
+<Base title={page.title} description={page.description} path="/" extraSchema={[faqSchema(homeFaqs)]}>
+  <Hero headline={page.headline} intro={page.intro} location="Homepage" image={page.image} />
+  <section class="content-section"><div class="content-inner split-section">
+    <div>
+      <h2 class="section-title">{page.sectionTitle}</h2>
+      <p class="section-intro">{page.sectionText}</p>
+      <div style="margin-top:27px"><a class="text-link" href={u(page.related.href)}>{page.related.label}<span aria-hidden="true">&#8599;</span></a></div>
+    </div>
+    <div class="content-list">
+      {serviceList.map((s, i) => (
+        <article class="content-item"><div class="item-number">{String(i + 1).padStart(2, '0')}</div>
+          <div><h3><a href={u(s.path)} style="color:inherit">{s.name}</a></h3><p>{s.summary}</p></div></article>
+      ))}
+    </div>
+  </div></section>
+  <section class="content-section" style="background:#eeece2"><div class="content-inner split-section">
+    <div>
+      <h2 class="section-title">Norton has both sewer and septic.</h2>
+      <p class="section-intro">The city grew from seven farm hamlets and has moved neighborhoods from septic tanks to sewer in stages. Knowing which one serves your home, and which part of the line is yours, comes before any cleaning plan.</p>
+    </div>
+    <div class="prose">
+      <p>Summit County Public Health says septic systems typically last 20 to 25 years when properly maintained. The City of Norton says the lateral line from a home belongs to the property owner and the main is the sewer authority's responsibility. We help sort out which side of that line your problem is on.</p>
+      <div style="display:flex;gap:26px;flex-wrap:wrap;margin-top:20px">
+        {guideList.map((g) => <a class="text-link" href={u(g.path)}>{g.name}<span aria-hidden="true">&#8599;</span></a>)}
+      </div>
+    </div>
+  </div></section>
+  <section class="content-section"><div class="content-inner">
+    <h2 class="section-title">Local notes for Norton areas.</h2>
+    <p class="section-intro">Each area page covers the local sewer or septic history, the housing and what to check before cleaning a line.</p>
+    <div class="pill-grid">{areas.map((a) => <a class="pill" href={u(`/service-areas/${a.slug}`)}>{a.name}</a>)}</div>
+  </div></section>
+  <section class="content-section" style="background:#eeece2"><div class="content-inner prose">
+    <h2 class="section-title">Quick answers.</h2>
+    {homeFaqs.map((f) => <details style="border-bottom:1px solid #d5d6cc;padding:18px 0"><summary style="font-weight:600;cursor:pointer">{f.question}</summary><p style="margin-top:12px">{f.answer}</p></details>)}
+    <div style="margin-top:24px"><a class="text-link" href={u('/faq')}>More questions answered<span aria-hidden="true">&#8599;</span></a></div>
+  </div></section>
+  <Callout />
+</Base>

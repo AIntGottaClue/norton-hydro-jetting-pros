@@ -1,0 +1,6 @@
+---
+import ServiceBody from '../components/ServiceBody.astro';
+import { services } from '../data/services';
+const s = services.find((x) => x.path === '/hydro-jetting');
+---
+<ServiceBody s={s} />

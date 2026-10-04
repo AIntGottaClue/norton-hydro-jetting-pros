@@ -1,0 +1,8 @@
+---
+import { business } from '../lib/site';
+const { title = 'Describe what is happening. Start with a call.', text = 'Discuss the affected drain, what you have noticed and whether hydro jetting may suit the line.' } = Astro.props;
+---
+<section class="callout"><div class="callout-inner">
+  <div><h2>{title}</h2><p>{text}</p></div>
+  <a class="call-cta" href={business.phoneHref}>Call {business.phoneDisplay}</a>
+</div></section>

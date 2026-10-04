@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Callout from './Callout.astro';
+import ItemList from './ItemList.astro';
+import { u } from '../lib/utils';
+import { business } from '../lib/site';
+import { faqSchema } from '../lib/seo';
+const { page, faq = false, legal = false, showCall = false, ids = false } = Astro.props;
+const crumbs = page.path === '/' ? [] : [{ name: page.name, path: page.path }];
+---
+<Base title={page.title} description={page.description} path={page.path} crumbs={crumbs} extraSchema={faq ? [faqSchema(page.items)] : []}>
+  <Hero headline={page.headline} intro={page.intro} location={page.name === 'Home' ? 'Homepage' : page.name} image={legal ? undefined : page.image} />
+  <section class="content-section"><div class="content-inner split-section">
+    <div>
+      <h2 class="section-title">{page.sectionTitle}</h2>
+      <p class="section-intro">{page.sectionText}</p>
+      {showCall && <div style="margin-top:27px"><a class="text-link" href={business.phoneHref}>Call {business.phoneDisplay}<span aria-hidden="true">&#8599;</span></a></div>}
+    </div>
+    <ItemList items={page.items} faq={faq} ids={ids} />
+  </div></section>
+  {!legal && <section class="content-section" style="padding-top:0"><div class="content-inner"><a class="text-link" href={u(page.related.href)}>{page.related.label}<span aria-hidden="true">&#8599;</span></a></div></section>}
+  <Callout />
+</Base>

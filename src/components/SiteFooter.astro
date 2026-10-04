@@ -1,0 +1,34 @@
+---
+import { business, footerServiceLinks, areaLinks } from '../lib/site';
+import { u } from '../lib/utils';
+---
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand-block">
+        <div class="footer-brand">{business.name}</div>
+        <p class="footer-blurb">{business.description}</p>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <div class="footer-links">{footerServiceLinks.map((l) => <a href={u(l.href)}>{l.label}</a>)}</div>
+      </div>
+      <div>
+        <h3>Service Areas</h3>
+        <div class="footer-links">{areaLinks.map((a) => <a href={u(a.href)}>{a.label}</a>)}</div>
+      </div>
+      <div>
+        <h3>Contact</h3>
+        <div class="footer-contact">
+          <a href={business.phoneHref}>{business.phoneDisplay}</a>
+          <span>Norton, Ohio</span>
+          <a href={u('/contact')}>Request a call</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; {new Date().getFullYear()} {business.name}</span>
+      <div class="legal-links"><a href={u('/privacy')}>Privacy</a><a href={u('/terms')}>Terms</a></div>
+    </div>
+  </div>
+</footer>

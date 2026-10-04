@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Callout from '../../components/Callout.astro';
+import { pages } from '../../data/pages';
+import { areas } from '../../data/areas';
+import { u } from '../../lib/utils';
+const page = pages.areas;
+---
+<Base title={page.title} description={page.description} path={page.path} crumbs={[{ name: page.name, path: page.path }]}>
+  <Hero headline={page.headline} intro={page.intro} location="Service Areas" image={page.image} />
+  <section class="content-section"><div class="content-inner">
+    <h2 class="section-title">{page.sectionTitle}</h2>
+    <p class="section-intro">{page.sectionText}</p>
+    <div class="content-list">
+      {areas.map((a, i) => (
+        <article class="content-item"><div class="item-number">{String(i + 1).padStart(2, '0')}</div>
+          <div><h3><a href={u(`/service-areas/${a.slug}`)} style="color:inherit">{a.name}</a></h3><p>{a.intro}</p></div></article>
+      ))}
+    </div>
+    <div style="margin-top:28px"><a class="text-link" href={u(page.related.href)}>{page.related.label}<span aria-hidden="true">&#8599;</span></a></div>
+  </div></section>
+  <Callout />
+</Base>
