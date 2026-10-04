@@ -136,7 +136,7 @@ export const services: ServicePage[] = [
         'A line that is already coated has less margin for the next load of laundry, a heavy holiday meal or a few weeks of growing roots. Cleaning it on a plan gives that margin back. It also gives a chance to look inside with a camera and catch a cracked or offset section before it becomes an emergency.',
         'Hydro jetting is a good fit for a planned visit because it cleans the whole wall instead of opening a single channel. The right interval depends on the line, the household and the history of backups. A property with no problems may need a long gap, and one with recurring problems may need shorter ones.' ] },
       { title: 'Sewer or septic first', paragraphs: [
-        'Norton has both. Neighborhoods that were once on septic have been connected to sewer in stages, and some homes remain on septic systems. Summit County Public Health says a typical septic system lasts 20 to 25 years if properly maintained, and that it inspects septic systems before homes with them change hands.',
+        'Norton has both. Neighborhoods that were once on septic have been connected to sewer in stages, and some homes remain on septic systems. Summit County Public Health publishes maintenance guidance for septic systems, and it inspects septic systems before homes with them change hands.',
         'Cleaning the pipe that leads to a septic tank is a different job from servicing the tank or drain field. A maintenance plan for a septic home should keep those two apart. For a sewer-connected home, the lateral is the owner\'s responsibility, so a plan there should focus on that run.' ] },
     ],
     points: [
