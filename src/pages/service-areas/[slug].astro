@@ -26,6 +26,12 @@ const service = {
 };
 const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: a.faqs.map(f => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) };
 const nearby = a.nearby.map((s) => areaBySlug[s]);
+const srcSentence = (items: [string, string][], cls = '') => {
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  const links = items.map(([url, label]) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer"${cls ? ` class="${cls}"` : ' style="text-decoration:underline"'}>${esc(label.replace(/\s*\([^)]*\)\s*$/, '').replace(/:\s+/, ' '))}</a>`);
+  const list = links.length === 1 ? links[0] : `${links.slice(0, -1).join(', ')} and ${links[links.length - 1]}`;
+  return `The background on this page comes from ${list}.`;
+};
 ---
 <Base title={title} description={description} path={path} crumbs={[{ name: 'Service Areas', path: '/service-areas' }, { name: a.name, path }]} extraSchema={[service, faqSchema]}>
   <Hero headline={`Hydro jetting in ${a.name}, Norton`} intro={a.intro} location={a.name} image={{ src: a.image, alt: a.imageAlt }} crumbs={[{ href: '/service-areas', label: 'Service Areas' }, { href: path, label: a.name }]} />
@@ -52,8 +58,7 @@ const nearby = a.nearby.map((s) => areaBySlug[s]);
   <section class="content-section"><div class="content-inner prose">
     <h2 class="section-title">Drain cleaning FAQs in {a.name}</h2>
     {a.faqs.map(f => <details style="border-bottom:1px solid #d5d6cc;padding:18px 0"><summary style="font-weight:600;cursor:pointer">{f.question}</summary><p style="margin-top:12px">{f.answer}</p></details>)}
-    <h3 style="margin-top:32px">Local sources</h3>
-    <ul style="padding-left:20px">{a.sources.map(s => <li><a href={s.url} target="_blank" rel="noopener noreferrer" style="text-decoration:underline">{s.label}</a></li>)}</ul>
+    <p style="margin-top:32px" set:html={srcSentence(a.sources.map((s) => [s.url, s.label]))} />
   </div></section>
   <Callout title={`Need hydro jetting in ${a.name}?`} text="Tell us what the drain is doing, and we will follow up." />
 </Base>
