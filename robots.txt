@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nortonhydrojetting.prosapp.site/sitemap.xml
